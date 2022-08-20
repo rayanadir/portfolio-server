@@ -321,7 +321,7 @@ module.exports.forgotPassword = async (req, res) => {
         user.expirePasswordTokenReset = Date.now() + 3 * 24 * 60 * 60 * 1000 // 3 days before token expiration
         user.userId = doc.userId;
         await user.save()
-        const url = `${process.env.BASE_URL}/reset/${token}`;
+        const url = `${process.env.BASE_URL}reset/${token}`;
         await sendEmail(user.email, user.username, "Réinitialisation du mot de passe/Password reset", url);
         res.status(200).json({
           status: 'success',
