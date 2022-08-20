@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "start": "node server"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +26,5 @@
     "nodemon": "^2.0.18",
     "socket.io": "^4.5.1",
     "validator": "^13.7.0"
-  },
-  "engines": {
-    "node": "16.13.2"
   }
 }
