@@ -8,7 +8,6 @@ const corsOptions ={
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
-app.use(cors(corsOptions));
 
 const Conversation = require('./models/conversation.model');
 const User = require('./models/user.model');
@@ -134,6 +133,7 @@ io.on("connection", (socket) => {
   });
 })
 
+app.use(cors(corsOptions));
 
 // get driver connection
 require("./config/db");
