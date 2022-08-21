@@ -1,13 +1,31 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config({ path: "./config.env" });
+
 const port = process.env.PORT || 5000;
+
+if(process.env.NODE_ENV !== "production"){
+  require("dotenv").config({ path: "./config.env" });
+}
+
+const BaseURLFromEnv = process.env.BASE_URL || "";
+const whitelist = BaseURLFromEnv.split(",").map(item => item.trim())
+
+
 const corsOptions ={
-  origin:process.env.BASE_URL, 
+  origin: (origin, callback) => {
+    if(!origin || whitelist.indexOf(origin) !==-1){
+      callback(null,true)
+    }else{
+      callback(new Error('Not allowed by CORS'))
+    }
+  }, 
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
+
+app.use(cors(corsOptions));
+
 
 const Conversation = require('./models/conversation.model');
 const User = require('./models/user.model');
@@ -133,7 +151,6 @@ io.on("connection", (socket) => {
   });
 })
 
-app.use(cors(corsOptions));
 
 // get driver connection
 require("./config/db");
