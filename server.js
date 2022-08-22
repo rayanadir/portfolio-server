@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-
 const port = process.env.PORT || 5000;
+const socket = require('socket.io')
+const http = require('http');
 
 if(process.env.NODE_ENV !== "production"){
   require("dotenv").config({ path: "./config.env" });
@@ -13,13 +14,13 @@ const whitelist = BaseURLFromEnv.split(",").map(item => item.trim())
 
 
 const corsOptions ={
-  origin: (origin, callback) => {
+  origin:process.env.BASE_URL /*(origin, callback) => {
     if(!origin || whitelist.indexOf(origin) !==-1){
       callback(null,true)
     }else{
       callback(new Error('Not allowed by CORS'))
     }
-  }, 
+  }*/, 
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
@@ -31,14 +32,49 @@ const Conversation = require('./models/conversation.model');
 const User = require('./models/user.model');
 const mongoose = require('mongoose');
 
-const io = require('socket.io')(8900,{
-  cors:{
-      origin: process.env.BASE_URL,
-  },
+
+
+
+// get driver connection
+require("./config/db");
+app.use(express.json());
+app.use(require("./routes/routes"))
+
+app.get('/', (req,res) => {
+  res.send("App is running")
 })
 
+
+
+ 
+const server = app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
+});
+
+
+const io = require('socket.io')(server, {
+  cors:{
+    origin:"https://rayan-dahmena.fr/"
+  }
+})
+
+/*const io = require('socket.io')(8900,{
+  cors:{
+      //origin: process.env.BASE_URL,
+      origin: [process.env.BASE_URL, process.env.BASE_URL_PROD]
+  },
+})*/
+
+/*
+const io = socket({
+  cors: {
+    origin:process.env.BASE_URL
+  }
+})*/
+
+
 io.on("connection", (socket) => {
-  //console.log("connection")
+  console.log(socket.id)
   const userId = socket.handshake.query.userId;
   User.findOne({userId}).lean().exec(async (err,user) => {
     if(err){
@@ -152,15 +188,7 @@ io.on("connection", (socket) => {
 })
 
 
-// get driver connection
-require("./config/db");
-app.use(express.json());
-app.use(require("./routes/routes"))
-
-app.get('/', (req,res) => {
-  res.send("App is running")
-})
- 
+/*
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
-});
+}) */
