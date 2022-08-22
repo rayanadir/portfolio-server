@@ -14,7 +14,7 @@ const whitelist = BaseURLFromEnv.split(",").map(item => item.trim())
 
 
 const corsOptions ={
-  origin:process.env.BASE_URL /*(origin, callback) => {
+  origin:process.env.BASE_URL_PROD /*(origin, callback) => {
     if(!origin || whitelist.indexOf(origin) !==-1){
       callback(null,true)
     }else{
