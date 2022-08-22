@@ -14,7 +14,7 @@ const whitelist = BaseURLFromEnv.split(",").map(item => item.trim())
 
 
 const corsOptions ={
-  origin:process.env.BASE_URL_PROD /*(origin, callback) => {
+  origin: "https://rayan-dahmena.herokuapp.com/" /*process.env.BASE_URL_PROD*/ /*(origin, callback) => {
     if(!origin || whitelist.indexOf(origin) !==-1){
       callback(null,true)
     }else{
@@ -54,7 +54,7 @@ const server = app.listen(port, () => {
 
 const io = require('socket.io')(server, {
   cors:{
-    origin:"https://rayan-dahmena.fr/"
+    origin:"https://rayan-dahmena.herokuapp.com/"
   }
 })
 
