@@ -2,25 +2,13 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 5000;
-const socket = require('socket.io')
-const http = require('http');
 
 if(process.env.NODE_ENV !== "production"){
   require("dotenv").config({ path: "./config.env" });
 }
 
-//const BaseURLFromEnv = process.env.BASE_URL || "";
-//const whitelist = BaseURLFromEnv.split(",").map(item => item.trim())
-
-
 const corsOptions ={
-  origin: "https://rayan-dahmena.fr" /*process.env.BASE_URL_PROD*/ /*(origin, callback) => {
-    if(!origin || whitelist.indexOf(origin) !==-1){
-      callback(null,true)
-    }else{
-      callback(new Error('Not allowed by CORS'))
-    }
-  }*/, 
+  origin: process.env.BASE_URL_PROD, 
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
@@ -31,21 +19,15 @@ const Conversation = require('./models/conversation.model');
 const User = require('./models/user.model');
 const mongoose = require('mongoose');
 
-
-
-
 // get driver connection
 require("./config/db");
 app.use(express.json());
 app.use(require("./routes/routes"));
 
 app.get('/', (req,res) => {
-  res.send("test")
+  res.send("App is running")
 })
 
-
-
- 
 const server = app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
@@ -53,24 +35,9 @@ const server = app.listen(port, () => {
 
 const io = require('socket.io')(server, {
   cors:{
-    origin:"https://rayan-dahmena.fr"
+    origin: process.env.BASE_URL_PROD
   }
 })
-
-/*const io = require('socket.io')(8900,{
-  cors:{
-      //origin: process.env.BASE_URL,
-      origin: [process.env.BASE_URL, process.env.BASE_URL_PROD]
-  },
-})*/
-
-/*
-const io = socket({
-  cors: {
-    origin:process.env.BASE_URL
-  }
-})*/
-
 
 io.on("connection", (socket) => {
   console.log(socket.id)
@@ -131,8 +98,6 @@ io.on("connection", (socket) => {
     })
   }
 
-
-
   // send a message
   socket.on('newMessage', async (data) => {
 
@@ -185,9 +150,3 @@ io.on("connection", (socket) => {
     //console.log("disconnection");
   });
 })
-
-
-/*
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-}) */
