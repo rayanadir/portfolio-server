@@ -41,7 +41,7 @@ app.use(express.json());
 app.use(require("./routes/routes"))
 
 app.get('/', (req,res) => {
-  res.send("test")
+  res.send("App is running")
 })
 
 
