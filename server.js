@@ -9,8 +9,8 @@ if(process.env.NODE_ENV !== "production"){
   require("dotenv").config({ path: "./config.env" });
 }
 
-const BaseURLFromEnv = process.env.BASE_URL || "";
-const whitelist = BaseURLFromEnv.split(",").map(item => item.trim())
+//const BaseURLFromEnv = process.env.BASE_URL || "";
+//const whitelist = BaseURLFromEnv.split(",").map(item => item.trim())
 
 
 const corsOptions ={
