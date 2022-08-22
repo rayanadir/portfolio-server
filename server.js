@@ -25,8 +25,8 @@ const corsOptions ={
   optionSuccessStatus:200
 }
 
-app.use(cors(corsOptions));
-
+//app.use(cors(corsOptions));
+app.use(cors())
 
 const Conversation = require('./models/conversation.model');
 const User = require('./models/user.model');
