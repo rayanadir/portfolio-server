@@ -25,8 +25,7 @@ const corsOptions ={
   optionSuccessStatus:200
 }
 
-//app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 
 const Conversation = require('./models/conversation.model');
 const User = require('./models/user.model');
@@ -52,11 +51,11 @@ const server = app.listen(port, () => {
 });
 
 
-const io = require('socket.io')(server/*, {
+const io = require('socket.io')(server, {
   cors:{
     origin:"https://rayan-dahmena.fr/"
   }
-}*/)
+})
 
 /*const io = require('socket.io')(8900,{
   cors:{
