@@ -8,7 +8,7 @@ if(process.env.NODE_ENV !== "production"){
 }
 
 const corsOptions ={
-  origin: process.env.API_URL_PROD, 
+  origin: "https://rayan-dahmena.fr", 
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
@@ -35,7 +35,7 @@ const server = app.listen(port, () => {
 
 const io = require('socket.io')(server, {
   cors:{
-    origin: process.env.API_URL_PROD
+    origin: "https://rayan-dahmena.fr"
   }
 })
 
