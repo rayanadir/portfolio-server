@@ -8,7 +8,7 @@ if(process.env.NODE_ENV !== "production"){
 }
 
 const corsOptions ={
-  origin:"https://rayan-dahmena.fr", 
+  origin:"https://rayan-dahmena.fr",
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200
 }
@@ -16,6 +16,7 @@ const corsOptions ={
 app.use(cors(corsOptions));
 
 const Conversation = require('./models/conversation.model');
+const Message = require('./models/message.model')
 const User = require('./models/user.model');
 const mongoose = require('mongoose');
 
@@ -40,7 +41,6 @@ const io = require('socket.io')(server, {
 })
 
 io.on("connection", (socket) => {
-  console.log(socket.id)
   const userId = socket.handshake.query.userId;
   User.findOne({userId}).lean().exec(async (err,user) => {
     if(err){
@@ -98,9 +98,8 @@ io.on("connection", (socket) => {
     })
   }
 
-  // send a message
+  // send a conversation message
   socket.on('newMessage', async (data) => {
-
     try {
       const conversationId =socket.handshake.query.conversationId;   
       Conversation.findOne({id: conversationId}).lean().exec(async (err, conv) => {
@@ -143,6 +142,15 @@ io.on("connection", (socket) => {
       })
     } catch (error) {
       console.log(error)
+    }
+  })
+
+  // get all simple messages
+  Message.find().sort({date: -1}).lean().exec(async (err,doc) => {
+    if(err){
+      socket.emit('getSimpleMessages', [])
+    }else if (doc){
+      socket.emit('getSimpleMessages', doc)
     }
   })
 

@@ -2,9 +2,9 @@ const router = require("express").Router();
 const authController = require("../controllers/auth.controller.js");
 const userController = require('../controllers/user.controller.js');
 const conversationController = require('../controllers/conversation.controller')
+const messageController = require('../controllers/message.controller')
 const auth = require("../middleware/auth.middleware")
 const resetMiddleware = require("../middleware/reset.middleware")
-const conversation = require('../middleware/conversation.middleware')
 
 // register
 router.post("/api/register", authController.signUp);
@@ -53,5 +53,17 @@ router.post("/api/hasConversation", conversationController.hasConversation);
 
 // check is valid conversation
 router.post("/api/checkConversation", conversationController.checkIsValidConversation)
+
+// send simple message
+router.post("/api/simpleMessage", messageController.sendSimpleMessage)
+
+// get all simple messages
+router.post("/api/messages", messageController.getAllSimpleMessages)
+
+// get simple message
+router.post("/api/message", messageController.getSimpleMessage)
+
+// check if simple message is valid
+router.post("/api/checkMessage", messageController.checkIsValidMessage)
 
 module.exports = router;
