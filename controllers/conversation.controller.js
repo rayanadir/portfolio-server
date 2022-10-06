@@ -24,14 +24,21 @@ module.exports.getAdmin = async (req, res) => {
 
 module.exports.newConversation = async (req, res) => {
     try {
-        const id = new mongoose.Types.ObjectId().toHexString()
+        const id = new mongoose.Types.ObjectId().toHexString();
+        const adminUser = await User.findOne({ email: String(process.env.USER) });
+        const { userId } = req.body
+        const conversation= new Conversation({
+            id,
+            users:[adminUser.id, userId],
+            messages:[]
+        })
+        await conversation.save()
             return res.status(201).json({
                 message:"ID generated",
                 code_msg:"id_generated",
                 id
             });
     } catch (err) {
-        console.error(err);
         return res.status(500).send({ message: "Internal server error", code_msg: "server_error" });
     }
 }
@@ -179,18 +186,21 @@ module.exports.checkIsValidConversation = async (req,res) => {
             return res.status(200).json({
                 message:"New conversation",
                 code_msg:"new_conversation",
+                users:[]
             })
         }else if(id && id!==undefined && id!==null){
             const conversation = await Conversation.findOne({id});
             if(!conversation){
                 return res.status(400).json({
                     message:"No conversation found",
-                    code_msg:"no_conversation_found"
+                    code_msg:"no_conversation_found",
+                    users:[]
                 })
             }else if(conversation){
                 return res.status(201).json({
                     message:"Conversation found",
-                    code_msg:"conversation_found"
+                    code_msg:"conversation_found",
+                    users:conversation.users
                 })
             }
         }

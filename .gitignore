@@ -1,12 +1,5 @@
-<<<<<<< HEAD
 /node_modules
 /config/.env
 config.env
 /frontend
 /frontend/node_modules
-=======
-/node_modules
-/config/.env
-config.env
-/frontend
->>>>>>> bb7d7e583358470a1c6e7c7dc478152a22eca79c
