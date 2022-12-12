@@ -2,10 +2,11 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 5000;
+require("dotenv").config({ path: "./config.env" });
 
-if(process.env.NODE_ENV !== "production"){
+/*if(process.env.NODE_ENV !== "production"){
   require("dotenv").config({ path: "./config.env" });
-}
+}*/
 
 const corsOptions ={
   origin:"https://rayan-dahmena.fr",
